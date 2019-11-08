@@ -30,8 +30,6 @@ make -j4 dtbs_install
 # Move boot file into an tgz file
 mkdir $INSTALL_MOD_PATH/boot
 ./scripts/mkknlimg ./arch/arm/boot/zImage $INSTALL_MOD_PATH/boot/$KERNEL.img
-cd $INSTALL_MOD_PATH/boot
-mv $KERNEL.img kernel7_rt.img
 cd $INSTALL_MOD_PATH
 tar czf ../kernel.tgz *
 

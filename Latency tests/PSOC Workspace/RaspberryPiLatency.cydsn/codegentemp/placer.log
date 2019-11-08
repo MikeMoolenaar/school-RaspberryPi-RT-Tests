@@ -6,7 +6,7 @@
 
 #Build Date:         Dec  5 2017 15:35:27
 
-#File Generated:     Nov 8 2019 15:24:20
+#File Generated:     Nov 8 2019 17:07:27
 
 #Purpose:            
 
@@ -55,7 +55,7 @@ Design Statistics after Packing
 Device Utilization Summary after Packing
     Macrocells                  :	25/192
     UDBS                        :	4/24
-    IOs                         :	4/72
+    IOs                         :	5/72
 
 
 D2088: Phase 3, elapsed time : 0.0 (sec)
@@ -120,11 +120,98 @@ Final Design Statistics
     Number of Status            	:	2
     Number of SyncCells         	:	0
     Number of count7cells       	:	1
-    Number of IOs       	:	4
+    Number of IOs       	:	5
 
 Device Utilization Summary
     Macrocells                  :	25/192
-    IOs                         :	4/72
+    IOs                         :	5/72
+
+
+
+######################################################################
+Placement Timing Summary
+
+The timing summary is based on estimated routing delays after
+placement. For final timing report, please carry out the timing
+analysis after routing.
+======================================================================
+
+
+######################################################################
+                     Clock Summary 
+======================================================================
+Number of clocks: 7
+Clock: CyBUS_CLK            | Frequency:   2.8 MHz | Target:  24.0 MHz
+Clock: CyBUS_CLK(fixed-function) | Frequency: N/A       | Target:  24.0 MHz
+Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyIMO                | Frequency: N/A       | Target:   3.0 MHz
+Clock: CyMASTER_CLK         | Frequency: N/A       | Target:  24.0 MHz
+Clock: CyPLL_OUT            | Frequency: N/A       | Target:  24.0 MHz
+Clock: UART_IntClock        | Frequency:   2.8 MHz | Target:   0.5 MHz
+
+======================================================================
+                     End of Clock Summary
+######################################################################
+
+Phase 6
+
+######################################################################
+Placement Timing Summary
+
+The timing summary is based on estimated routing delays after
+placement. For final timing report, please carry out the timing
+analysis after routing.
+======================================================================
+
+######################################################################
+                     Clock Summary 
+======================================================================
+Number of clocks: 7
+Clock: CyBUS_CLK            | Frequency:   2.8 MHz | Target:  24.0 MHz
+Clock: CyBUS_CLK(fixed-function) | Frequency: N/A       | Target:  24.0 MHz
+Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyIMO                | Frequency: N/A       | Target:   3.0 MHz
+Clock: CyMASTER_CLK         | Frequency: N/A       | Target:  24.0 MHz
+Clock: CyPLL_OUT            | Frequency: N/A       | Target:  24.0 MHz
+Clock: UART_IntClock        | Frequency:   2.8 MHz | Target:   0.5 MHz
+
+======================================================================
+                     End of Clock Summary
+######################################################################
+
+D2088: Phase 6, elapsed time : 0.0 (sec)
+
+Phase 7
+######################################################################
+                     Clock Summary 
+======================================================================
+Number of clocks: 7
+Clock: CyBUS_CLK            | Frequency:   2.8 MHz | Target:  24.0 MHz
+Clock: CyBUS_CLK(fixed-function) | Frequency: N/A       | Target:  24.0 MHz
+Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyIMO                | Frequency: N/A       | Target:   3.0 MHz
+Clock: CyMASTER_CLK         | Frequency: N/A       | Target:  24.0 MHz
+Clock: CyPLL_OUT            | Frequency: N/A       | Target:  24.0 MHz
+Clock: UART_IntClock        | Frequency:   2.8 MHz | Target:   0.5 MHz
+
+======================================================================
+                     End of Clock Summary
+######################################################################
+D2088: Phase 7, elapsed time : 0.2 (sec)
+
+Final Design Statistics
+    Number of Combinational MCs 	:	9
+    Number of Sequential MCs    	:	16
+    Number of DPs               	:	3
+    Number of Controls          	:	1
+    Number of Status            	:	2
+    Number of SyncCells         	:	0
+    Number of count7cells       	:	1
+    Number of IOs       	:	5
+
+Device Utilization Summary
+    Macrocells                  :	25/192
+    IOs                         :	5/72
 
 
 
@@ -158,5 +245,5 @@ D2088: Phase 8, elapsed time : 0.0 (sec)
 
 D2054: Placement of the design completed successfully
 
-I2076: Total run-time: 0.5 sec.
+I2076: Total run-time: 0.6 sec.
 

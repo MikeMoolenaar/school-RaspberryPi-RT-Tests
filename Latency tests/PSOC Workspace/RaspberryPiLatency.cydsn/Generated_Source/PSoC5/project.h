@@ -27,6 +27,8 @@
 #include "ISR_Timer.h"
 #include "Timer.h"
 #include "ISR_Input.h"
+#include "Pin_Ground_aliases.h"
+#include "Pin_Ground.h"
 #include "UART_IntClock.h"
 #include "cy_em_eeprom.h"
 #include "core_cm3_psoc5.h"

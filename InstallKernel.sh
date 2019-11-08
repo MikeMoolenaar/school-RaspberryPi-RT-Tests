@@ -1,4 +1,4 @@
-tar xzf rt-kernel.tgz
+tar xzf kernel.tgz
 cd boot
 sudo cp -rd * /boot/
 cd ../lib
