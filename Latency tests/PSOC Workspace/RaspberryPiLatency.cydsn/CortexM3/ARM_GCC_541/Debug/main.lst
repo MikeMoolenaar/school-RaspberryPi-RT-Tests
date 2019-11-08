@@ -1,0 +1,1377 @@
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.ISR_TIMER,"ax",%progbits
+  20              		.align	2
+  21              		.global	ISR_TIMER
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	ISR_TIMER, %function
+  25              	ISR_TIMER:
+  26              	.LFB63:
+  27              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright Mike Moolenaar, 2019
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * ========================================
+   6:main.c        **** */
+   7:main.c        **** #include "project.h"
+   8:main.c        **** #include <stdlib.h>
+   9:main.c        **** 
+  10:main.c        **** #define MAX_SAMPLES 20
+  11:main.c        **** 
+  12:main.c        **** void uartPrintInt(int x);
+  13:main.c        **** 
+  14:main.c        **** int count = 0;
+  15:main.c        **** int timer_is_running = 0;
+  16:main.c        **** CY_ISR(ISR_TIMER) {
+  28              		.loc 1 16 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  17:main.c        ****     count++;
+  33              		.loc 1 17 0
+  34 0000 024A     		ldr	r2, .L2
+  35 0002 1368     		ldr	r3, [r2]
+  36 0004 0133     		adds	r3, r3, #1
+  37 0006 1360     		str	r3, [r2]
+  38 0008 7047     		bx	lr
+  39              	.L3:
+  40 000a 00BF     		.align	2
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 2
+
+
+  41              	.L2:
+  42 000c 00000000 		.word	.LANCHOR0
+  43              		.cfi_endproc
+  44              	.LFE63:
+  45              		.size	ISR_TIMER, .-ISR_TIMER
+  46              		.section	.text.main,"ax",%progbits
+  47              		.align	2
+  48              		.global	main
+  49              		.thumb
+  50              		.thumb_func
+  51              		.type	main, %function
+  52              	main:
+  53              	.LFB65:
+  18:main.c        **** }
+  19:main.c        **** 
+  20:main.c        **** CY_ISR(ISR_INPUT) {
+  21:main.c        ****     Timer_Stop();
+  22:main.c        ****     
+  23:main.c        ****     UART_PutString("Time: ");
+  24:main.c        ****     uartPrintInt(count*10); // Because timer pulses every 10 microseconds
+  25:main.c        ****     UART_PutString("us\r\n");
+  26:main.c        ****     
+  27:main.c        ****     // Reset values
+  28:main.c        ****     count = 0;
+  29:main.c        ****     timer_is_running = 0;
+  30:main.c        ****     Pin_Input_ClearInterrupt();
+  31:main.c        **** }
+  32:main.c        **** 
+  33:main.c        **** int main(void)
+  34:main.c        **** {
+  54              		.loc 1 34 0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58 0000 10B5     		push	{r4, lr}
+  59              		.cfi_def_cfa_offset 8
+  60              		.cfi_offset 4, -8
+  61              		.cfi_offset 14, -4
+  35:main.c        ****     ISR_Timer_StartEx(ISR_TIMER);
+  62              		.loc 1 35 0
+  63 0002 1848     		ldr	r0, .L9
+  64 0004 FFF7FEFF 		bl	ISR_Timer_StartEx
+  65              	.LVL0:
+  36:main.c        ****     ISR_Input_StartEx(ISR_INPUT);
+  66              		.loc 1 36 0
+  67 0008 1748     		ldr	r0, .L9+4
+  68 000a FFF7FEFF 		bl	ISR_Input_StartEx
+  69              	.LVL1:
+  37:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  70              		.loc 1 37 0
+  71              		.syntax unified
+  72              	@ 37 "main.c" 1
+  73 000e 62B6     		CPSIE   i
+  74              	@ 0 "" 2
+  38:main.c        ****     
+  39:main.c        ****     UART_Start();
+  75              		.loc 1 39 0
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 3
+
+
+  76              		.thumb
+  77              		.syntax unified
+  78 0010 FFF7FEFF 		bl	UART_Start
+  79              	.LVL2:
+  40:main.c        ****     UART_PutString("\r\nStart!\r\n");
+  80              		.loc 1 40 0
+  81 0014 1548     		ldr	r0, .L9+8
+  82 0016 FFF7FEFF 		bl	UART_PutString
+  83              	.LVL3:
+  41:main.c        ****     Pin_Output_Write(0);
+  84              		.loc 1 41 0
+  85 001a 0020     		movs	r0, #0
+  86 001c FFF7FEFF 		bl	Pin_Output_Write
+  87              	.LVL4:
+  42:main.c        ****     CyDelay(200);
+  88              		.loc 1 42 0
+  89 0020 C820     		movs	r0, #200
+  90 0022 FFF7FEFF 		bl	CyDelay
+  91              	.LVL5:
+  92              	.LBB2:
+  43:main.c        ****     
+  44:main.c        ****     for(int i = 0; i < MAX_SAMPLES; i++)
+  93              		.loc 1 44 0
+  94 0026 0024     		movs	r4, #0
+  95 0028 15E0     		b	.L5
+  96              	.LVL6:
+  97              	.L7:
+  45:main.c        ****     {
+  46:main.c        ****         timer_is_running = 1;
+  98              		.loc 1 46 0
+  99 002a 0120     		movs	r0, #1
+ 100 002c 104B     		ldr	r3, .L9+12
+ 101 002e 5860     		str	r0, [r3, #4]
+  47:main.c        ****         
+  48:main.c        ****         // Pulse and start timer
+  49:main.c        ****         Pin_Output_Write(1);
+ 102              		.loc 1 49 0
+ 103 0030 FFF7FEFF 		bl	Pin_Output_Write
+ 104              	.LVL7:
+  50:main.c        ****         Timer_Start();
+ 105              		.loc 1 50 0
+ 106 0034 FFF7FEFF 		bl	Timer_Start
+ 107              	.LVL8:
+  51:main.c        ****         CyDelay(200);
+ 108              		.loc 1 51 0
+ 109 0038 C820     		movs	r0, #200
+ 110 003a FFF7FEFF 		bl	CyDelay
+ 111              	.LVL9:
+  52:main.c        ****         Pin_Output_Write(0);
+ 112              		.loc 1 52 0
+ 113 003e 0020     		movs	r0, #0
+ 114 0040 FFF7FEFF 		bl	Pin_Output_Write
+ 115              	.LVL10:
+ 116              	.L6:
+  53:main.c        ****         
+  54:main.c        ****         // Start timer and wait till timer stops
+  55:main.c        ****         while (timer_is_running == 1) {}
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 4
+
+
+ 117              		.loc 1 55 0 discriminator 1
+ 118 0044 0A4B     		ldr	r3, .L9+12
+ 119 0046 5B68     		ldr	r3, [r3, #4]
+ 120 0048 012B     		cmp	r3, #1
+ 121 004a FBD0     		beq	.L6
+  56:main.c        ****         
+  57:main.c        ****         // Cool down
+  58:main.c        ****         CyDelay(1000);
+ 122              		.loc 1 58 0 discriminator 2
+ 123 004c 4FF47A70 		mov	r0, #1000
+ 124 0050 FFF7FEFF 		bl	CyDelay
+ 125              	.LVL11:
+  44:main.c        ****     {
+ 126              		.loc 1 44 0 discriminator 2
+ 127 0054 0134     		adds	r4, r4, #1
+ 128              	.LVL12:
+ 129              	.L5:
+  44:main.c        ****     {
+ 130              		.loc 1 44 0 is_stmt 0 discriminator 1
+ 131 0056 132C     		cmp	r4, #19
+ 132 0058 E7DD     		ble	.L7
+ 133              	.LBE2:
+  59:main.c        ****     }
+  60:main.c        ****     
+  61:main.c        ****     UART_PutString("Done!\r\n");
+ 134              		.loc 1 61 0 is_stmt 1
+ 135 005a 0648     		ldr	r0, .L9+16
+ 136 005c FFF7FEFF 		bl	UART_PutString
+ 137              	.LVL13:
+  62:main.c        **** }
+ 138              		.loc 1 62 0
+ 139 0060 0020     		movs	r0, #0
+ 140 0062 10BD     		pop	{r4, pc}
+ 141              	.LVL14:
+ 142              	.L10:
+ 143              		.align	2
+ 144              	.L9:
+ 145 0064 00000000 		.word	ISR_TIMER
+ 146 0068 00000000 		.word	ISR_INPUT
+ 147 006c 00000000 		.word	.LC0
+ 148 0070 00000000 		.word	.LANCHOR0
+ 149 0074 0C000000 		.word	.LC1
+ 150              		.cfi_endproc
+ 151              	.LFE65:
+ 152              		.size	main, .-main
+ 153              		.section	.text.uartPrintInt,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	uartPrintInt
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.type	uartPrintInt, %function
+ 159              	uartPrintInt:
+ 160              	.LFB66:
+  63:main.c        **** 
+  64:main.c        **** void uartPrintInt(int x) {
+ 161              		.loc 1 64 0
+ 162              		.cfi_startproc
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 5
+
+
+ 163              		@ args = 0, pretend = 0, frame = 8
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              	.LVL15:
+ 166 0000 00B5     		push	{lr}
+ 167              		.cfi_def_cfa_offset 4
+ 168              		.cfi_offset 14, -4
+ 169 0002 83B0     		sub	sp, sp, #12
+ 170              		.cfi_def_cfa_offset 16
+  65:main.c        **** 	char ch[5];
+  66:main.c        **** 	itoa(x, ch, 10);
+ 171              		.loc 1 66 0
+ 172 0004 0A22     		movs	r2, #10
+ 173 0006 6946     		mov	r1, sp
+ 174 0008 FFF7FEFF 		bl	itoa
+ 175              	.LVL16:
+  67:main.c        **** 	UART_PutString(ch);
+ 176              		.loc 1 67 0
+ 177 000c 6846     		mov	r0, sp
+ 178 000e FFF7FEFF 		bl	UART_PutString
+ 179              	.LVL17:
+  68:main.c        **** }...
+ 180              		.loc 1 68 0
+ 181 0012 03B0     		add	sp, sp, #12
+ 182              		.cfi_def_cfa_offset 4
+ 183              		@ sp needed
+ 184 0014 5DF804FB 		ldr	pc, [sp], #4
+ 185              		.cfi_endproc
+ 186              	.LFE66:
+ 187              		.size	uartPrintInt, .-uartPrintInt
+ 188              		.section	.text.ISR_INPUT,"ax",%progbits
+ 189              		.align	2
+ 190              		.global	ISR_INPUT
+ 191              		.thumb
+ 192              		.thumb_func
+ 193              		.type	ISR_INPUT, %function
+ 194              	ISR_INPUT:
+ 195              	.LFB64:
+  20:main.c        **** CY_ISR(ISR_INPUT) {
+ 196              		.loc 1 20 0
+ 197              		.cfi_startproc
+ 198              		@ args = 0, pretend = 0, frame = 0
+ 199              		@ frame_needed = 0, uses_anonymous_args = 0
+ 200 0000 10B5     		push	{r4, lr}
+ 201              		.cfi_def_cfa_offset 8
+ 202              		.cfi_offset 4, -8
+ 203              		.cfi_offset 14, -4
+  21:main.c        ****     Timer_Stop();
+ 204              		.loc 1 21 0
+ 205 0002 FFF7FEFF 		bl	Timer_Stop
+ 206              	.LVL18:
+  23:main.c        ****     UART_PutString("Time: ");
+ 207              		.loc 1 23 0
+ 208 0006 0948     		ldr	r0, .L15
+ 209 0008 FFF7FEFF 		bl	UART_PutString
+ 210              	.LVL19:
+  24:main.c        ****     uartPrintInt(count*10); // Because timer pulses every 10 microseconds
+ 211              		.loc 1 24 0
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 6
+
+
+ 212 000c 084C     		ldr	r4, .L15+4
+ 213 000e 2368     		ldr	r3, [r4]
+ 214 0010 03EB8303 		add	r3, r3, r3, lsl #2
+ 215 0014 5800     		lsls	r0, r3, #1
+ 216 0016 FFF7FEFF 		bl	uartPrintInt
+ 217              	.LVL20:
+  25:main.c        ****     UART_PutString("us\r\n");
+ 218              		.loc 1 25 0
+ 219 001a 0648     		ldr	r0, .L15+8
+ 220 001c FFF7FEFF 		bl	UART_PutString
+ 221              	.LVL21:
+  28:main.c        ****     count = 0;
+ 222              		.loc 1 28 0
+ 223 0020 0023     		movs	r3, #0
+ 224 0022 2360     		str	r3, [r4]
+  29:main.c        ****     timer_is_running = 0;
+ 225              		.loc 1 29 0
+ 226 0024 6360     		str	r3, [r4, #4]
+  30:main.c        ****     Pin_Input_ClearInterrupt();
+ 227              		.loc 1 30 0
+ 228 0026 FFF7FEFF 		bl	Pin_Input_ClearInterrupt
+ 229              	.LVL22:
+ 230 002a 10BD     		pop	{r4, pc}
+ 231              	.L16:
+ 232              		.align	2
+ 233              	.L15:
+ 234 002c 14000000 		.word	.LC2
+ 235 0030 00000000 		.word	.LANCHOR0
+ 236 0034 1C000000 		.word	.LC3
+ 237              		.cfi_endproc
+ 238              	.LFE64:
+ 239              		.size	ISR_INPUT, .-ISR_INPUT
+ 240              		.global	timer_is_running
+ 241              		.global	count
+ 242              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 243              		.align	2
+ 244              	.LC0:
+ 245 0000 0D0A5374 		.ascii	"\015\012Start!\015\012\000"
+ 245      61727421 
+ 245      0D0A00
+ 246 000b 00       		.space	1
+ 247              	.LC1:
+ 248 000c 446F6E65 		.ascii	"Done!\015\012\000"
+ 248      210D0A00 
+ 249              	.LC2:
+ 250 0014 54696D65 		.ascii	"Time: \000"
+ 250      3A2000
+ 251 001b 00       		.space	1
+ 252              	.LC3:
+ 253 001c 75730D0A 		.ascii	"us\015\012\000"
+ 253      00
+ 254              		.bss
+ 255              		.align	2
+ 256              		.set	.LANCHOR0,. + 0
+ 257              		.type	count, %object
+ 258              		.size	count, 4
+ 259              	count:
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 7
+
+
+ 260 0000 00000000 		.space	4
+ 261              		.type	timer_is_running, %object
+ 262              		.size	timer_is_running, 4
+ 263              	timer_is_running:
+ 264 0004 00000000 		.space	4
+ 265              		.text
+ 266              	.Letext0:
+ 267              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 268              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 269              		.file 4 "Generated_Source\\PSoC5/core_cm3.h"
+ 270              		.file 5 "Generated_Source\\PSoC5/Pin_Output.h"
+ 271              		.file 6 "Generated_Source\\PSoC5/Timer.h"
+ 272              		.file 7 "Generated_Source\\PSoC5/CyLib.h"
+ 273              		.file 8 "Generated_Source\\PSoC5/ISR_Timer.h"
+ 274              		.file 9 "Generated_Source\\PSoC5/ISR_Input.h"
+ 275              		.file 10 "Generated_Source\\PSoC5/UART.h"
+ 276              		.file 11 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 277              		.file 12 "Generated_Source\\PSoC5/Pin_Input.h"
+ 278              		.section	.debug_info,"",%progbits
+ 279              	.Ldebug_info0:
+ 280 0000 33030000 		.4byte	0x333
+ 281 0004 0400     		.2byte	0x4
+ 282 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 283 000a 04       		.byte	0x4
+ 284 000b 01       		.uleb128 0x1
+ 285 000c 58000000 		.4byte	.LASF31
+ 286 0010 0C       		.byte	0xc
+ 287 0011 00020000 		.4byte	.LASF32
+ 288 0015 5A010000 		.4byte	.LASF33
+ 289 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 290 001d 00000000 		.4byte	0
+ 291 0021 00000000 		.4byte	.Ldebug_line0
+ 292 0025 02       		.uleb128 0x2
+ 293 0026 01       		.byte	0x1
+ 294 0027 06       		.byte	0x6
+ 295 0028 5B020000 		.4byte	.LASF0
+ 296 002c 02       		.uleb128 0x2
+ 297 002d 01       		.byte	0x1
+ 298 002e 08       		.byte	0x8
+ 299 002f 4A000000 		.4byte	.LASF1
+ 300 0033 02       		.uleb128 0x2
+ 301 0034 02       		.byte	0x2
+ 302 0035 05       		.byte	0x5
+ 303 0036 12020000 		.4byte	.LASF2
+ 304 003a 02       		.uleb128 0x2
+ 305 003b 02       		.byte	0x2
+ 306 003c 07       		.byte	0x7
+ 307 003d 02010000 		.4byte	.LASF3
+ 308 0041 03       		.uleb128 0x3
+ 309 0042 12000000 		.4byte	.LASF9
+ 310 0046 02       		.byte	0x2
+ 311 0047 3F       		.byte	0x3f
+ 312 0048 4C000000 		.4byte	0x4c
+ 313 004c 02       		.uleb128 0x2
+ 314 004d 04       		.byte	0x4
+ 315 004e 05       		.byte	0x5
+ 316 004f 2D020000 		.4byte	.LASF4
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 8
+
+
+ 317 0053 02       		.uleb128 0x2
+ 318 0054 04       		.byte	0x4
+ 319 0055 07       		.byte	0x7
+ 320 0056 F0000000 		.4byte	.LASF5
+ 321 005a 02       		.uleb128 0x2
+ 322 005b 08       		.byte	0x8
+ 323 005c 05       		.byte	0x5
+ 324 005d F2010000 		.4byte	.LASF6
+ 325 0061 02       		.uleb128 0x2
+ 326 0062 08       		.byte	0x8
+ 327 0063 07       		.byte	0x7
+ 328 0064 BD010000 		.4byte	.LASF7
+ 329 0068 04       		.uleb128 0x4
+ 330 0069 04       		.byte	0x4
+ 331 006a 05       		.byte	0x5
+ 332 006b 696E7400 		.ascii	"int\000"
+ 333 006f 02       		.uleb128 0x2
+ 334 0070 04       		.byte	0x4
+ 335 0071 07       		.byte	0x7
+ 336 0072 B0010000 		.4byte	.LASF8
+ 337 0076 03       		.uleb128 0x3
+ 338 0077 E1010000 		.4byte	.LASF10
+ 339 007b 03       		.byte	0x3
+ 340 007c 2C       		.byte	0x2c
+ 341 007d 41000000 		.4byte	0x41
+ 342 0081 02       		.uleb128 0x2
+ 343 0082 04       		.byte	0x4
+ 344 0083 04       		.byte	0x4
+ 345 0084 3F000000 		.4byte	.LASF11
+ 346 0088 02       		.uleb128 0x2
+ 347 0089 08       		.byte	0x8
+ 348 008a 04       		.byte	0x4
+ 349 008b 1C000000 		.4byte	.LASF12
+ 350 008f 02       		.uleb128 0x2
+ 351 0090 01       		.byte	0x1
+ 352 0091 08       		.byte	0x8
+ 353 0092 07020000 		.4byte	.LASF13
+ 354 0096 02       		.uleb128 0x2
+ 355 0097 08       		.byte	0x8
+ 356 0098 04       		.byte	0x4
+ 357 0099 36020000 		.4byte	.LASF14
+ 358 009d 02       		.uleb128 0x2
+ 359 009e 04       		.byte	0x4
+ 360 009f 07       		.byte	0x7
+ 361 00a0 E9010000 		.4byte	.LASF15
+ 362 00a4 05       		.uleb128 0x5
+ 363 00a5 2D010000 		.4byte	.LASF34
+ 364 00a9 01       		.byte	0x1
+ 365 00aa 10       		.byte	0x10
+ 366 00ab 00000000 		.4byte	.LFB63
+ 367 00af 10000000 		.4byte	.LFE63-.LFB63
+ 368 00b3 01       		.uleb128 0x1
+ 369 00b4 9C       		.byte	0x9c
+ 370 00b5 06       		.uleb128 0x6
+ 371 00b6 37010000 		.4byte	.LASF35
+ 372 00ba 01       		.byte	0x1
+ 373 00bb 21       		.byte	0x21
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 9
+
+
+ 374 00bc 68000000 		.4byte	0x68
+ 375 00c0 00000000 		.4byte	.LFB65
+ 376 00c4 78000000 		.4byte	.LFE65-.LFB65
+ 377 00c8 01       		.uleb128 0x1
+ 378 00c9 9C       		.byte	0x9c
+ 379 00ca C6010000 		.4byte	0x1c6
+ 380 00ce 07       		.uleb128 0x7
+ 381 00cf 26000000 		.4byte	.LBB2
+ 382 00d3 34000000 		.4byte	.LBE2-.LBB2
+ 383 00d7 3D010000 		.4byte	0x13d
+ 384 00db 08       		.uleb128 0x8
+ 385 00dc 6900     		.ascii	"i\000"
+ 386 00de 01       		.byte	0x1
+ 387 00df 2C       		.byte	0x2c
+ 388 00e0 68000000 		.4byte	0x68
+ 389 00e4 00000000 		.4byte	.LLST0
+ 390 00e8 09       		.uleb128 0x9
+ 391 00e9 34000000 		.4byte	.LVL7
+ 392 00ed C8020000 		.4byte	0x2c8
+ 393 00f1 FB000000 		.4byte	0xfb
+ 394 00f5 0A       		.uleb128 0xa
+ 395 00f6 01       		.uleb128 0x1
+ 396 00f7 50       		.byte	0x50
+ 397 00f8 01       		.uleb128 0x1
+ 398 00f9 31       		.byte	0x31
+ 399 00fa 00       		.byte	0
+ 400 00fb 0B       		.uleb128 0xb
+ 401 00fc 38000000 		.4byte	.LVL8
+ 402 0100 D3020000 		.4byte	0x2d3
+ 403 0104 09       		.uleb128 0x9
+ 404 0105 3E000000 		.4byte	.LVL9
+ 405 0109 DE020000 		.4byte	0x2de
+ 406 010d 18010000 		.4byte	0x118
+ 407 0111 0A       		.uleb128 0xa
+ 408 0112 01       		.uleb128 0x1
+ 409 0113 50       		.byte	0x50
+ 410 0114 02       		.uleb128 0x2
+ 411 0115 08       		.byte	0x8
+ 412 0116 C8       		.byte	0xc8
+ 413 0117 00       		.byte	0
+ 414 0118 09       		.uleb128 0x9
+ 415 0119 44000000 		.4byte	.LVL10
+ 416 011d C8020000 		.4byte	0x2c8
+ 417 0121 2B010000 		.4byte	0x12b
+ 418 0125 0A       		.uleb128 0xa
+ 419 0126 01       		.uleb128 0x1
+ 420 0127 50       		.byte	0x50
+ 421 0128 01       		.uleb128 0x1
+ 422 0129 30       		.byte	0x30
+ 423 012a 00       		.byte	0
+ 424 012b 0C       		.uleb128 0xc
+ 425 012c 54000000 		.4byte	.LVL11
+ 426 0130 DE020000 		.4byte	0x2de
+ 427 0134 0A       		.uleb128 0xa
+ 428 0135 01       		.uleb128 0x1
+ 429 0136 50       		.byte	0x50
+ 430 0137 03       		.uleb128 0x3
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 10
+
+
+ 431 0138 0A       		.byte	0xa
+ 432 0139 E803     		.2byte	0x3e8
+ 433 013b 00       		.byte	0
+ 434 013c 00       		.byte	0
+ 435 013d 09       		.uleb128 0x9
+ 436 013e 08000000 		.4byte	.LVL0
+ 437 0142 E9020000 		.4byte	0x2e9
+ 438 0146 54010000 		.4byte	0x154
+ 439 014a 0A       		.uleb128 0xa
+ 440 014b 01       		.uleb128 0x1
+ 441 014c 50       		.byte	0x50
+ 442 014d 05       		.uleb128 0x5
+ 443 014e 03       		.byte	0x3
+ 444 014f 00000000 		.4byte	ISR_TIMER
+ 445 0153 00       		.byte	0
+ 446 0154 09       		.uleb128 0x9
+ 447 0155 0E000000 		.4byte	.LVL1
+ 448 0159 F4020000 		.4byte	0x2f4
+ 449 015d 6B010000 		.4byte	0x16b
+ 450 0161 0A       		.uleb128 0xa
+ 451 0162 01       		.uleb128 0x1
+ 452 0163 50       		.byte	0x50
+ 453 0164 05       		.uleb128 0x5
+ 454 0165 03       		.byte	0x3
+ 455 0166 00000000 		.4byte	ISR_INPUT
+ 456 016a 00       		.byte	0
+ 457 016b 0B       		.uleb128 0xb
+ 458 016c 14000000 		.4byte	.LVL2
+ 459 0170 FF020000 		.4byte	0x2ff
+ 460 0174 09       		.uleb128 0x9
+ 461 0175 1A000000 		.4byte	.LVL3
+ 462 0179 0A030000 		.4byte	0x30a
+ 463 017d 8B010000 		.4byte	0x18b
+ 464 0181 0A       		.uleb128 0xa
+ 465 0182 01       		.uleb128 0x1
+ 466 0183 50       		.byte	0x50
+ 467 0184 05       		.uleb128 0x5
+ 468 0185 03       		.byte	0x3
+ 469 0186 00000000 		.4byte	.LC0
+ 470 018a 00       		.byte	0
+ 471 018b 09       		.uleb128 0x9
+ 472 018c 20000000 		.4byte	.LVL4
+ 473 0190 C8020000 		.4byte	0x2c8
+ 474 0194 9E010000 		.4byte	0x19e
+ 475 0198 0A       		.uleb128 0xa
+ 476 0199 01       		.uleb128 0x1
+ 477 019a 50       		.byte	0x50
+ 478 019b 01       		.uleb128 0x1
+ 479 019c 30       		.byte	0x30
+ 480 019d 00       		.byte	0
+ 481 019e 09       		.uleb128 0x9
+ 482 019f 26000000 		.4byte	.LVL5
+ 483 01a3 DE020000 		.4byte	0x2de
+ 484 01a7 B2010000 		.4byte	0x1b2
+ 485 01ab 0A       		.uleb128 0xa
+ 486 01ac 01       		.uleb128 0x1
+ 487 01ad 50       		.byte	0x50
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 11
+
+
+ 488 01ae 02       		.uleb128 0x2
+ 489 01af 08       		.byte	0x8
+ 490 01b0 C8       		.byte	0xc8
+ 491 01b1 00       		.byte	0
+ 492 01b2 0C       		.uleb128 0xc
+ 493 01b3 60000000 		.4byte	.LVL13
+ 494 01b7 0A030000 		.4byte	0x30a
+ 495 01bb 0A       		.uleb128 0xa
+ 496 01bc 01       		.uleb128 0x1
+ 497 01bd 50       		.byte	0x50
+ 498 01be 05       		.uleb128 0x5
+ 499 01bf 03       		.byte	0x3
+ 500 01c0 0C000000 		.4byte	.LC1
+ 501 01c4 00       		.byte	0
+ 502 01c5 00       		.byte	0
+ 503 01c6 0D       		.uleb128 0xd
+ 504 01c7 D4010000 		.4byte	.LASF16
+ 505 01cb 01       		.byte	0x1
+ 506 01cc 40       		.byte	0x40
+ 507 01cd 00000000 		.4byte	.LFB66
+ 508 01d1 18000000 		.4byte	.LFE66-.LFB66
+ 509 01d5 01       		.uleb128 0x1
+ 510 01d6 9C       		.byte	0x9c
+ 511 01d7 26020000 		.4byte	0x226
+ 512 01db 0E       		.uleb128 0xe
+ 513 01dc 7800     		.ascii	"x\000"
+ 514 01de 01       		.byte	0x1
+ 515 01df 40       		.byte	0x40
+ 516 01e0 68000000 		.4byte	0x68
+ 517 01e4 1F000000 		.4byte	.LLST1
+ 518 01e8 0F       		.uleb128 0xf
+ 519 01e9 636800   		.ascii	"ch\000"
+ 520 01ec 01       		.byte	0x1
+ 521 01ed 41       		.byte	0x41
+ 522 01ee 26020000 		.4byte	0x226
+ 523 01f2 02       		.uleb128 0x2
+ 524 01f3 91       		.byte	0x91
+ 525 01f4 70       		.sleb128 -16
+ 526 01f5 09       		.uleb128 0x9
+ 527 01f6 0C000000 		.4byte	.LVL16
+ 528 01fa 15030000 		.4byte	0x315
+ 529 01fe 15020000 		.4byte	0x215
+ 530 0202 0A       		.uleb128 0xa
+ 531 0203 01       		.uleb128 0x1
+ 532 0204 50       		.byte	0x50
+ 533 0205 03       		.uleb128 0x3
+ 534 0206 F3       		.byte	0xf3
+ 535 0207 01       		.uleb128 0x1
+ 536 0208 50       		.byte	0x50
+ 537 0209 0A       		.uleb128 0xa
+ 538 020a 01       		.uleb128 0x1
+ 539 020b 51       		.byte	0x51
+ 540 020c 02       		.uleb128 0x2
+ 541 020d 7D       		.byte	0x7d
+ 542 020e 00       		.sleb128 0
+ 543 020f 0A       		.uleb128 0xa
+ 544 0210 01       		.uleb128 0x1
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 12
+
+
+ 545 0211 52       		.byte	0x52
+ 546 0212 01       		.uleb128 0x1
+ 547 0213 3A       		.byte	0x3a
+ 548 0214 00       		.byte	0
+ 549 0215 0C       		.uleb128 0xc
+ 550 0216 12000000 		.4byte	.LVL17
+ 551 021a 0A030000 		.4byte	0x30a
+ 552 021e 0A       		.uleb128 0xa
+ 553 021f 01       		.uleb128 0x1
+ 554 0220 50       		.byte	0x50
+ 555 0221 02       		.uleb128 0x2
+ 556 0222 7D       		.byte	0x7d
+ 557 0223 00       		.sleb128 0
+ 558 0224 00       		.byte	0
+ 559 0225 00       		.byte	0
+ 560 0226 10       		.uleb128 0x10
+ 561 0227 8F000000 		.4byte	0x8f
+ 562 022b 36020000 		.4byte	0x236
+ 563 022f 11       		.uleb128 0x11
+ 564 0230 9D000000 		.4byte	0x9d
+ 565 0234 04       		.byte	0x4
+ 566 0235 00       		.byte	0
+ 567 0236 0D       		.uleb128 0xd
+ 568 0237 E6000000 		.4byte	.LASF17
+ 569 023b 01       		.byte	0x1
+ 570 023c 14       		.byte	0x14
+ 571 023d 00000000 		.4byte	.LFB64
+ 572 0241 38000000 		.4byte	.LFE64-.LFB64
+ 573 0245 01       		.uleb128 0x1
+ 574 0246 9C       		.byte	0x9c
+ 575 0247 95020000 		.4byte	0x295
+ 576 024b 0B       		.uleb128 0xb
+ 577 024c 06000000 		.4byte	.LVL18
+ 578 0250 20030000 		.4byte	0x320
+ 579 0254 09       		.uleb128 0x9
+ 580 0255 0C000000 		.4byte	.LVL19
+ 581 0259 0A030000 		.4byte	0x30a
+ 582 025d 6B020000 		.4byte	0x26b
+ 583 0261 0A       		.uleb128 0xa
+ 584 0262 01       		.uleb128 0x1
+ 585 0263 50       		.byte	0x50
+ 586 0264 05       		.uleb128 0x5
+ 587 0265 03       		.byte	0x3
+ 588 0266 14000000 		.4byte	.LC2
+ 589 026a 00       		.byte	0
+ 590 026b 0B       		.uleb128 0xb
+ 591 026c 1A000000 		.4byte	.LVL20
+ 592 0270 C6010000 		.4byte	0x1c6
+ 593 0274 09       		.uleb128 0x9
+ 594 0275 20000000 		.4byte	.LVL21
+ 595 0279 0A030000 		.4byte	0x30a
+ 596 027d 8B020000 		.4byte	0x28b
+ 597 0281 0A       		.uleb128 0xa
+ 598 0282 01       		.uleb128 0x1
+ 599 0283 50       		.byte	0x50
+ 600 0284 05       		.uleb128 0x5
+ 601 0285 03       		.byte	0x3
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 13
+
+
+ 602 0286 1C000000 		.4byte	.LC3
+ 603 028a 00       		.byte	0
+ 604 028b 0B       		.uleb128 0xb
+ 605 028c 2A000000 		.4byte	.LVL22
+ 606 0290 2B030000 		.4byte	0x32b
+ 607 0294 00       		.byte	0
+ 608 0295 12       		.uleb128 0x12
+ 609 0296 20010000 		.4byte	.LASF18
+ 610 029a 04       		.byte	0x4
+ 611 029b 1207     		.2byte	0x712
+ 612 029d A1020000 		.4byte	0x2a1
+ 613 02a1 13       		.uleb128 0x13
+ 614 02a2 76000000 		.4byte	0x76
+ 615 02a6 14       		.uleb128 0x14
+ 616 02a7 0C020000 		.4byte	.LASF19
+ 617 02ab 01       		.byte	0x1
+ 618 02ac 0E       		.byte	0xe
+ 619 02ad 68000000 		.4byte	0x68
+ 620 02b1 05       		.uleb128 0x5
+ 621 02b2 03       		.byte	0x3
+ 622 02b3 00000000 		.4byte	count
+ 623 02b7 14       		.uleb128 0x14
+ 624 02b8 23000000 		.4byte	.LASF20
+ 625 02bc 01       		.byte	0x1
+ 626 02bd 0F       		.byte	0xf
+ 627 02be 68000000 		.4byte	0x68
+ 628 02c2 05       		.uleb128 0x5
+ 629 02c3 03       		.byte	0x3
+ 630 02c4 00000000 		.4byte	timer_is_running
+ 631 02c8 15       		.uleb128 0x15
+ 632 02c9 1C020000 		.4byte	.LASF21
+ 633 02cd 1C020000 		.4byte	.LASF21
+ 634 02d1 05       		.byte	0x5
+ 635 02d2 26       		.byte	0x26
+ 636 02d3 15       		.uleb128 0x15
+ 637 02d4 4E010000 		.4byte	.LASF22
+ 638 02d8 4E010000 		.4byte	.LASF22
+ 639 02dc 06       		.byte	0x6
+ 640 02dd 5A       		.byte	0x5a
+ 641 02de 15       		.uleb128 0x15
+ 642 02df 76020000 		.4byte	.LASF23
+ 643 02e3 76020000 		.4byte	.LASF23
+ 644 02e7 07       		.byte	0x7
+ 645 02e8 76       		.byte	0x76
+ 646 02e9 15       		.uleb128 0x15
+ 647 02ea 3C010000 		.4byte	.LASF24
+ 648 02ee 3C010000 		.4byte	.LASF24
+ 649 02f2 08       		.byte	0x8
+ 650 02f3 18       		.byte	0x18
+ 651 02f4 15       		.uleb128 0x15
+ 652 02f5 00000000 		.4byte	.LASF25
+ 653 02f9 00000000 		.4byte	.LASF25
+ 654 02fd 09       		.byte	0x9
+ 655 02fe 18       		.byte	0x18
+ 656 02ff 15       		.uleb128 0x15
+ 657 0300 15010000 		.4byte	.LASF26
+ 658 0304 15010000 		.4byte	.LASF26
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 14
+
+
+ 659 0308 0A       		.byte	0xa
+ 660 0309 54       		.byte	0x54
+ 661 030a 15       		.uleb128 0x15
+ 662 030b 67020000 		.4byte	.LASF27
+ 663 030f 67020000 		.4byte	.LASF27
+ 664 0313 0A       		.byte	0xa
+ 665 0314 8B       		.byte	0x8b
+ 666 0315 15       		.uleb128 0x15
+ 667 0316 45000000 		.4byte	.LASF28
+ 668 031a 45000000 		.4byte	.LASF28
+ 669 031e 0B       		.byte	0xb
+ 670 031f CB       		.byte	0xcb
+ 671 0320 15       		.uleb128 0x15
+ 672 0321 34000000 		.4byte	.LASF29
+ 673 0325 34000000 		.4byte	.LASF29
+ 674 0329 06       		.byte	0x6
+ 675 032a 5B       		.byte	0x5b
+ 676 032b 15       		.uleb128 0x15
+ 677 032c 42020000 		.4byte	.LASF30
+ 678 0330 42020000 		.4byte	.LASF30
+ 679 0334 0C       		.byte	0xc
+ 680 0335 2B       		.byte	0x2b
+ 681 0336 00       		.byte	0
+ 682              		.section	.debug_abbrev,"",%progbits
+ 683              	.Ldebug_abbrev0:
+ 684 0000 01       		.uleb128 0x1
+ 685 0001 11       		.uleb128 0x11
+ 686 0002 01       		.byte	0x1
+ 687 0003 25       		.uleb128 0x25
+ 688 0004 0E       		.uleb128 0xe
+ 689 0005 13       		.uleb128 0x13
+ 690 0006 0B       		.uleb128 0xb
+ 691 0007 03       		.uleb128 0x3
+ 692 0008 0E       		.uleb128 0xe
+ 693 0009 1B       		.uleb128 0x1b
+ 694 000a 0E       		.uleb128 0xe
+ 695 000b 55       		.uleb128 0x55
+ 696 000c 17       		.uleb128 0x17
+ 697 000d 11       		.uleb128 0x11
+ 698 000e 01       		.uleb128 0x1
+ 699 000f 10       		.uleb128 0x10
+ 700 0010 17       		.uleb128 0x17
+ 701 0011 00       		.byte	0
+ 702 0012 00       		.byte	0
+ 703 0013 02       		.uleb128 0x2
+ 704 0014 24       		.uleb128 0x24
+ 705 0015 00       		.byte	0
+ 706 0016 0B       		.uleb128 0xb
+ 707 0017 0B       		.uleb128 0xb
+ 708 0018 3E       		.uleb128 0x3e
+ 709 0019 0B       		.uleb128 0xb
+ 710 001a 03       		.uleb128 0x3
+ 711 001b 0E       		.uleb128 0xe
+ 712 001c 00       		.byte	0
+ 713 001d 00       		.byte	0
+ 714 001e 03       		.uleb128 0x3
+ 715 001f 16       		.uleb128 0x16
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 15
+
+
+ 716 0020 00       		.byte	0
+ 717 0021 03       		.uleb128 0x3
+ 718 0022 0E       		.uleb128 0xe
+ 719 0023 3A       		.uleb128 0x3a
+ 720 0024 0B       		.uleb128 0xb
+ 721 0025 3B       		.uleb128 0x3b
+ 722 0026 0B       		.uleb128 0xb
+ 723 0027 49       		.uleb128 0x49
+ 724 0028 13       		.uleb128 0x13
+ 725 0029 00       		.byte	0
+ 726 002a 00       		.byte	0
+ 727 002b 04       		.uleb128 0x4
+ 728 002c 24       		.uleb128 0x24
+ 729 002d 00       		.byte	0
+ 730 002e 0B       		.uleb128 0xb
+ 731 002f 0B       		.uleb128 0xb
+ 732 0030 3E       		.uleb128 0x3e
+ 733 0031 0B       		.uleb128 0xb
+ 734 0032 03       		.uleb128 0x3
+ 735 0033 08       		.uleb128 0x8
+ 736 0034 00       		.byte	0
+ 737 0035 00       		.byte	0
+ 738 0036 05       		.uleb128 0x5
+ 739 0037 2E       		.uleb128 0x2e
+ 740 0038 00       		.byte	0
+ 741 0039 3F       		.uleb128 0x3f
+ 742 003a 19       		.uleb128 0x19
+ 743 003b 03       		.uleb128 0x3
+ 744 003c 0E       		.uleb128 0xe
+ 745 003d 3A       		.uleb128 0x3a
+ 746 003e 0B       		.uleb128 0xb
+ 747 003f 3B       		.uleb128 0x3b
+ 748 0040 0B       		.uleb128 0xb
+ 749 0041 27       		.uleb128 0x27
+ 750 0042 19       		.uleb128 0x19
+ 751 0043 11       		.uleb128 0x11
+ 752 0044 01       		.uleb128 0x1
+ 753 0045 12       		.uleb128 0x12
+ 754 0046 06       		.uleb128 0x6
+ 755 0047 40       		.uleb128 0x40
+ 756 0048 18       		.uleb128 0x18
+ 757 0049 9742     		.uleb128 0x2117
+ 758 004b 19       		.uleb128 0x19
+ 759 004c 00       		.byte	0
+ 760 004d 00       		.byte	0
+ 761 004e 06       		.uleb128 0x6
+ 762 004f 2E       		.uleb128 0x2e
+ 763 0050 01       		.byte	0x1
+ 764 0051 3F       		.uleb128 0x3f
+ 765 0052 19       		.uleb128 0x19
+ 766 0053 03       		.uleb128 0x3
+ 767 0054 0E       		.uleb128 0xe
+ 768 0055 3A       		.uleb128 0x3a
+ 769 0056 0B       		.uleb128 0xb
+ 770 0057 3B       		.uleb128 0x3b
+ 771 0058 0B       		.uleb128 0xb
+ 772 0059 27       		.uleb128 0x27
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 16
+
+
+ 773 005a 19       		.uleb128 0x19
+ 774 005b 49       		.uleb128 0x49
+ 775 005c 13       		.uleb128 0x13
+ 776 005d 11       		.uleb128 0x11
+ 777 005e 01       		.uleb128 0x1
+ 778 005f 12       		.uleb128 0x12
+ 779 0060 06       		.uleb128 0x6
+ 780 0061 40       		.uleb128 0x40
+ 781 0062 18       		.uleb128 0x18
+ 782 0063 9742     		.uleb128 0x2117
+ 783 0065 19       		.uleb128 0x19
+ 784 0066 01       		.uleb128 0x1
+ 785 0067 13       		.uleb128 0x13
+ 786 0068 00       		.byte	0
+ 787 0069 00       		.byte	0
+ 788 006a 07       		.uleb128 0x7
+ 789 006b 0B       		.uleb128 0xb
+ 790 006c 01       		.byte	0x1
+ 791 006d 11       		.uleb128 0x11
+ 792 006e 01       		.uleb128 0x1
+ 793 006f 12       		.uleb128 0x12
+ 794 0070 06       		.uleb128 0x6
+ 795 0071 01       		.uleb128 0x1
+ 796 0072 13       		.uleb128 0x13
+ 797 0073 00       		.byte	0
+ 798 0074 00       		.byte	0
+ 799 0075 08       		.uleb128 0x8
+ 800 0076 34       		.uleb128 0x34
+ 801 0077 00       		.byte	0
+ 802 0078 03       		.uleb128 0x3
+ 803 0079 08       		.uleb128 0x8
+ 804 007a 3A       		.uleb128 0x3a
+ 805 007b 0B       		.uleb128 0xb
+ 806 007c 3B       		.uleb128 0x3b
+ 807 007d 0B       		.uleb128 0xb
+ 808 007e 49       		.uleb128 0x49
+ 809 007f 13       		.uleb128 0x13
+ 810 0080 02       		.uleb128 0x2
+ 811 0081 17       		.uleb128 0x17
+ 812 0082 00       		.byte	0
+ 813 0083 00       		.byte	0
+ 814 0084 09       		.uleb128 0x9
+ 815 0085 898201   		.uleb128 0x4109
+ 816 0088 01       		.byte	0x1
+ 817 0089 11       		.uleb128 0x11
+ 818 008a 01       		.uleb128 0x1
+ 819 008b 31       		.uleb128 0x31
+ 820 008c 13       		.uleb128 0x13
+ 821 008d 01       		.uleb128 0x1
+ 822 008e 13       		.uleb128 0x13
+ 823 008f 00       		.byte	0
+ 824 0090 00       		.byte	0
+ 825 0091 0A       		.uleb128 0xa
+ 826 0092 8A8201   		.uleb128 0x410a
+ 827 0095 00       		.byte	0
+ 828 0096 02       		.uleb128 0x2
+ 829 0097 18       		.uleb128 0x18
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 17
+
+
+ 830 0098 9142     		.uleb128 0x2111
+ 831 009a 18       		.uleb128 0x18
+ 832 009b 00       		.byte	0
+ 833 009c 00       		.byte	0
+ 834 009d 0B       		.uleb128 0xb
+ 835 009e 898201   		.uleb128 0x4109
+ 836 00a1 00       		.byte	0
+ 837 00a2 11       		.uleb128 0x11
+ 838 00a3 01       		.uleb128 0x1
+ 839 00a4 31       		.uleb128 0x31
+ 840 00a5 13       		.uleb128 0x13
+ 841 00a6 00       		.byte	0
+ 842 00a7 00       		.byte	0
+ 843 00a8 0C       		.uleb128 0xc
+ 844 00a9 898201   		.uleb128 0x4109
+ 845 00ac 01       		.byte	0x1
+ 846 00ad 11       		.uleb128 0x11
+ 847 00ae 01       		.uleb128 0x1
+ 848 00af 31       		.uleb128 0x31
+ 849 00b0 13       		.uleb128 0x13
+ 850 00b1 00       		.byte	0
+ 851 00b2 00       		.byte	0
+ 852 00b3 0D       		.uleb128 0xd
+ 853 00b4 2E       		.uleb128 0x2e
+ 854 00b5 01       		.byte	0x1
+ 855 00b6 3F       		.uleb128 0x3f
+ 856 00b7 19       		.uleb128 0x19
+ 857 00b8 03       		.uleb128 0x3
+ 858 00b9 0E       		.uleb128 0xe
+ 859 00ba 3A       		.uleb128 0x3a
+ 860 00bb 0B       		.uleb128 0xb
+ 861 00bc 3B       		.uleb128 0x3b
+ 862 00bd 0B       		.uleb128 0xb
+ 863 00be 27       		.uleb128 0x27
+ 864 00bf 19       		.uleb128 0x19
+ 865 00c0 11       		.uleb128 0x11
+ 866 00c1 01       		.uleb128 0x1
+ 867 00c2 12       		.uleb128 0x12
+ 868 00c3 06       		.uleb128 0x6
+ 869 00c4 40       		.uleb128 0x40
+ 870 00c5 18       		.uleb128 0x18
+ 871 00c6 9742     		.uleb128 0x2117
+ 872 00c8 19       		.uleb128 0x19
+ 873 00c9 01       		.uleb128 0x1
+ 874 00ca 13       		.uleb128 0x13
+ 875 00cb 00       		.byte	0
+ 876 00cc 00       		.byte	0
+ 877 00cd 0E       		.uleb128 0xe
+ 878 00ce 05       		.uleb128 0x5
+ 879 00cf 00       		.byte	0
+ 880 00d0 03       		.uleb128 0x3
+ 881 00d1 08       		.uleb128 0x8
+ 882 00d2 3A       		.uleb128 0x3a
+ 883 00d3 0B       		.uleb128 0xb
+ 884 00d4 3B       		.uleb128 0x3b
+ 885 00d5 0B       		.uleb128 0xb
+ 886 00d6 49       		.uleb128 0x49
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 18
+
+
+ 887 00d7 13       		.uleb128 0x13
+ 888 00d8 02       		.uleb128 0x2
+ 889 00d9 17       		.uleb128 0x17
+ 890 00da 00       		.byte	0
+ 891 00db 00       		.byte	0
+ 892 00dc 0F       		.uleb128 0xf
+ 893 00dd 34       		.uleb128 0x34
+ 894 00de 00       		.byte	0
+ 895 00df 03       		.uleb128 0x3
+ 896 00e0 08       		.uleb128 0x8
+ 897 00e1 3A       		.uleb128 0x3a
+ 898 00e2 0B       		.uleb128 0xb
+ 899 00e3 3B       		.uleb128 0x3b
+ 900 00e4 0B       		.uleb128 0xb
+ 901 00e5 49       		.uleb128 0x49
+ 902 00e6 13       		.uleb128 0x13
+ 903 00e7 02       		.uleb128 0x2
+ 904 00e8 18       		.uleb128 0x18
+ 905 00e9 00       		.byte	0
+ 906 00ea 00       		.byte	0
+ 907 00eb 10       		.uleb128 0x10
+ 908 00ec 01       		.uleb128 0x1
+ 909 00ed 01       		.byte	0x1
+ 910 00ee 49       		.uleb128 0x49
+ 911 00ef 13       		.uleb128 0x13
+ 912 00f0 01       		.uleb128 0x1
+ 913 00f1 13       		.uleb128 0x13
+ 914 00f2 00       		.byte	0
+ 915 00f3 00       		.byte	0
+ 916 00f4 11       		.uleb128 0x11
+ 917 00f5 21       		.uleb128 0x21
+ 918 00f6 00       		.byte	0
+ 919 00f7 49       		.uleb128 0x49
+ 920 00f8 13       		.uleb128 0x13
+ 921 00f9 2F       		.uleb128 0x2f
+ 922 00fa 0B       		.uleb128 0xb
+ 923 00fb 00       		.byte	0
+ 924 00fc 00       		.byte	0
+ 925 00fd 12       		.uleb128 0x12
+ 926 00fe 34       		.uleb128 0x34
+ 927 00ff 00       		.byte	0
+ 928 0100 03       		.uleb128 0x3
+ 929 0101 0E       		.uleb128 0xe
+ 930 0102 3A       		.uleb128 0x3a
+ 931 0103 0B       		.uleb128 0xb
+ 932 0104 3B       		.uleb128 0x3b
+ 933 0105 05       		.uleb128 0x5
+ 934 0106 49       		.uleb128 0x49
+ 935 0107 13       		.uleb128 0x13
+ 936 0108 3F       		.uleb128 0x3f
+ 937 0109 19       		.uleb128 0x19
+ 938 010a 3C       		.uleb128 0x3c
+ 939 010b 19       		.uleb128 0x19
+ 940 010c 00       		.byte	0
+ 941 010d 00       		.byte	0
+ 942 010e 13       		.uleb128 0x13
+ 943 010f 35       		.uleb128 0x35
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 19
+
+
+ 944 0110 00       		.byte	0
+ 945 0111 49       		.uleb128 0x49
+ 946 0112 13       		.uleb128 0x13
+ 947 0113 00       		.byte	0
+ 948 0114 00       		.byte	0
+ 949 0115 14       		.uleb128 0x14
+ 950 0116 34       		.uleb128 0x34
+ 951 0117 00       		.byte	0
+ 952 0118 03       		.uleb128 0x3
+ 953 0119 0E       		.uleb128 0xe
+ 954 011a 3A       		.uleb128 0x3a
+ 955 011b 0B       		.uleb128 0xb
+ 956 011c 3B       		.uleb128 0x3b
+ 957 011d 0B       		.uleb128 0xb
+ 958 011e 49       		.uleb128 0x49
+ 959 011f 13       		.uleb128 0x13
+ 960 0120 3F       		.uleb128 0x3f
+ 961 0121 19       		.uleb128 0x19
+ 962 0122 02       		.uleb128 0x2
+ 963 0123 18       		.uleb128 0x18
+ 964 0124 00       		.byte	0
+ 965 0125 00       		.byte	0
+ 966 0126 15       		.uleb128 0x15
+ 967 0127 2E       		.uleb128 0x2e
+ 968 0128 00       		.byte	0
+ 969 0129 3F       		.uleb128 0x3f
+ 970 012a 19       		.uleb128 0x19
+ 971 012b 3C       		.uleb128 0x3c
+ 972 012c 19       		.uleb128 0x19
+ 973 012d 6E       		.uleb128 0x6e
+ 974 012e 0E       		.uleb128 0xe
+ 975 012f 03       		.uleb128 0x3
+ 976 0130 0E       		.uleb128 0xe
+ 977 0131 3A       		.uleb128 0x3a
+ 978 0132 0B       		.uleb128 0xb
+ 979 0133 3B       		.uleb128 0x3b
+ 980 0134 0B       		.uleb128 0xb
+ 981 0135 00       		.byte	0
+ 982 0136 00       		.byte	0
+ 983 0137 00       		.byte	0
+ 984              		.section	.debug_loc,"",%progbits
+ 985              	.Ldebug_loc0:
+ 986              	.LLST0:
+ 987 0000 26000000 		.4byte	.LVL5
+ 988 0004 2A000000 		.4byte	.LVL6
+ 989 0008 0200     		.2byte	0x2
+ 990 000a 30       		.byte	0x30
+ 991 000b 9F       		.byte	0x9f
+ 992 000c 2A000000 		.4byte	.LVL6
+ 993 0010 64000000 		.4byte	.LVL14
+ 994 0014 0100     		.2byte	0x1
+ 995 0016 54       		.byte	0x54
+ 996 0017 00000000 		.4byte	0
+ 997 001b 00000000 		.4byte	0
+ 998              	.LLST1:
+ 999 001f 00000000 		.4byte	.LVL15
+ 1000 0023 0B000000 		.4byte	.LVL16-1
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 20
+
+
+ 1001 0027 0100     		.2byte	0x1
+ 1002 0029 50       		.byte	0x50
+ 1003 002a 0B000000 		.4byte	.LVL16-1
+ 1004 002e 18000000 		.4byte	.LFE66
+ 1005 0032 0400     		.2byte	0x4
+ 1006 0034 F3       		.byte	0xf3
+ 1007 0035 01       		.uleb128 0x1
+ 1008 0036 50       		.byte	0x50
+ 1009 0037 9F       		.byte	0x9f
+ 1010 0038 00000000 		.4byte	0
+ 1011 003c 00000000 		.4byte	0
+ 1012              		.section	.debug_aranges,"",%progbits
+ 1013 0000 34000000 		.4byte	0x34
+ 1014 0004 0200     		.2byte	0x2
+ 1015 0006 00000000 		.4byte	.Ldebug_info0
+ 1016 000a 04       		.byte	0x4
+ 1017 000b 00       		.byte	0
+ 1018 000c 0000     		.2byte	0
+ 1019 000e 0000     		.2byte	0
+ 1020 0010 00000000 		.4byte	.LFB63
+ 1021 0014 10000000 		.4byte	.LFE63-.LFB63
+ 1022 0018 00000000 		.4byte	.LFB65
+ 1023 001c 78000000 		.4byte	.LFE65-.LFB65
+ 1024 0020 00000000 		.4byte	.LFB66
+ 1025 0024 18000000 		.4byte	.LFE66-.LFB66
+ 1026 0028 00000000 		.4byte	.LFB64
+ 1027 002c 38000000 		.4byte	.LFE64-.LFB64
+ 1028 0030 00000000 		.4byte	0
+ 1029 0034 00000000 		.4byte	0
+ 1030              		.section	.debug_ranges,"",%progbits
+ 1031              	.Ldebug_ranges0:
+ 1032 0000 00000000 		.4byte	.LFB63
+ 1033 0004 10000000 		.4byte	.LFE63
+ 1034 0008 00000000 		.4byte	.LFB65
+ 1035 000c 78000000 		.4byte	.LFE65
+ 1036 0010 00000000 		.4byte	.LFB66
+ 1037 0014 18000000 		.4byte	.LFE66
+ 1038 0018 00000000 		.4byte	.LFB64
+ 1039 001c 38000000 		.4byte	.LFE64
+ 1040 0020 00000000 		.4byte	0
+ 1041 0024 00000000 		.4byte	0
+ 1042              		.section	.debug_line,"",%progbits
+ 1043              	.Ldebug_line0:
+ 1044 0000 86020000 		.section	.debug_str,"MS",%progbits,1
+ 1044      02001002 
+ 1044      00000201 
+ 1044      FB0E0D00 
+ 1044      01010101 
+ 1045              	.LASF25:
+ 1046 0000 4953525F 		.ascii	"ISR_Input_StartEx\000"
+ 1046      496E7075 
+ 1046      745F5374 
+ 1046      61727445 
+ 1046      7800
+ 1047              	.LASF9:
+ 1048 0012 5F5F696E 		.ascii	"__int32_t\000"
+ 1048      7433325F 
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 21
+
+
+ 1048      7400
+ 1049              	.LASF12:
+ 1050 001c 646F7562 		.ascii	"double\000"
+ 1050      6C6500
+ 1051              	.LASF20:
+ 1052 0023 74696D65 		.ascii	"timer_is_running\000"
+ 1052      725F6973 
+ 1052      5F72756E 
+ 1052      6E696E67 
+ 1052      00
+ 1053              	.LASF29:
+ 1054 0034 54696D65 		.ascii	"Timer_Stop\000"
+ 1054      725F5374 
+ 1054      6F7000
+ 1055              	.LASF11:
+ 1056 003f 666C6F61 		.ascii	"float\000"
+ 1056      7400
+ 1057              	.LASF28:
+ 1058 0045 69746F61 		.ascii	"itoa\000"
+ 1058      00
+ 1059              	.LASF1:
+ 1060 004a 756E7369 		.ascii	"unsigned char\000"
+ 1060      676E6564 
+ 1060      20636861 
+ 1060      7200
+ 1061              	.LASF31:
+ 1062 0058 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1062      43313120 
+ 1062      352E342E 
+ 1062      31203230 
+ 1062      31363036 
+ 1063 008b 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1063      20726576 
+ 1063      6973696F 
+ 1063      6E203233 
+ 1063      37373135 
+ 1064 00be 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1064      66756E63 
+ 1064      74696F6E 
+ 1064      2D736563 
+ 1064      74696F6E 
+ 1065              	.LASF17:
+ 1066 00e6 4953525F 		.ascii	"ISR_INPUT\000"
+ 1066      494E5055 
+ 1066      5400
+ 1067              	.LASF5:
+ 1068 00f0 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1068      20756E73 
+ 1068      69676E65 
+ 1068      6420696E 
+ 1068      7400
+ 1069              	.LASF3:
+ 1070 0102 73686F72 		.ascii	"short unsigned int\000"
+ 1070      7420756E 
+ 1070      7369676E 
+ 1070      65642069 
+ 1070      6E7400
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 22
+
+
+ 1071              	.LASF26:
+ 1072 0115 55415254 		.ascii	"UART_Start\000"
+ 1072      5F537461 
+ 1072      727400
+ 1073              	.LASF18:
+ 1074 0120 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1074      52784275 
+ 1074      66666572 
+ 1074      00
+ 1075              	.LASF34:
+ 1076 012d 4953525F 		.ascii	"ISR_TIMER\000"
+ 1076      54494D45 
+ 1076      5200
+ 1077              	.LASF35:
+ 1078 0137 6D61696E 		.ascii	"main\000"
+ 1078      00
+ 1079              	.LASF24:
+ 1080 013c 4953525F 		.ascii	"ISR_Timer_StartEx\000"
+ 1080      54696D65 
+ 1080      725F5374 
+ 1080      61727445 
+ 1080      7800
+ 1081              	.LASF22:
+ 1082 014e 54696D65 		.ascii	"Timer_Start\000"
+ 1082      725F5374 
+ 1082      61727400 
+ 1083              	.LASF33:
+ 1084 015a 433A5C55 		.ascii	"C:\\Users\\likem\\Google Drive\\School\\RTOS\\RT li"
+ 1084      73657273 
+ 1084      5C6C696B 
+ 1084      656D5C47 
+ 1084      6F6F676C 
+ 1085 0187 6E75785C 		.ascii	"nux\\Workspace01\\RaspberryPiLatency.cydsn\000"
+ 1085      576F726B 
+ 1085      73706163 
+ 1085      6530315C 
+ 1085      52617370 
+ 1086              	.LASF8:
+ 1087 01b0 756E7369 		.ascii	"unsigned int\000"
+ 1087      676E6564 
+ 1087      20696E74 
+ 1087      00
+ 1088              	.LASF7:
+ 1089 01bd 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1089      206C6F6E 
+ 1089      6720756E 
+ 1089      7369676E 
+ 1089      65642069 
+ 1090              	.LASF16:
+ 1091 01d4 75617274 		.ascii	"uartPrintInt\000"
+ 1091      5072696E 
+ 1091      74496E74 
+ 1091      00
+ 1092              	.LASF10:
+ 1093 01e1 696E7433 		.ascii	"int32_t\000"
+ 1093      325F7400 
+ 1094              	.LASF15:
+ARM GAS  C:\Users\likem\AppData\Local\Temp\ccmuLQZn.s 			page 23
+
+
+ 1095 01e9 73697A65 		.ascii	"sizetype\000"
+ 1095      74797065 
+ 1095      00
+ 1096              	.LASF6:
+ 1097 01f2 6C6F6E67 		.ascii	"long long int\000"
+ 1097      206C6F6E 
+ 1097      6720696E 
+ 1097      7400
+ 1098              	.LASF32:
+ 1099 0200 6D61696E 		.ascii	"main.c\000"
+ 1099      2E6300
+ 1100              	.LASF13:
+ 1101 0207 63686172 		.ascii	"char\000"
+ 1101      00
+ 1102              	.LASF19:
+ 1103 020c 636F756E 		.ascii	"count\000"
+ 1103      7400
+ 1104              	.LASF2:
+ 1105 0212 73686F72 		.ascii	"short int\000"
+ 1105      7420696E 
+ 1105      7400
+ 1106              	.LASF21:
+ 1107 021c 50696E5F 		.ascii	"Pin_Output_Write\000"
+ 1107      4F757470 
+ 1107      75745F57 
+ 1107      72697465 
+ 1107      00
+ 1108              	.LASF4:
+ 1109 022d 6C6F6E67 		.ascii	"long int\000"
+ 1109      20696E74 
+ 1109      00
+ 1110              	.LASF14:
+ 1111 0236 6C6F6E67 		.ascii	"long double\000"
+ 1111      20646F75 
+ 1111      626C6500 
+ 1112              	.LASF30:
+ 1113 0242 50696E5F 		.ascii	"Pin_Input_ClearInterrupt\000"
+ 1113      496E7075 
+ 1113      745F436C 
+ 1113      65617249 
+ 1113      6E746572 
+ 1114              	.LASF0:
+ 1115 025b 7369676E 		.ascii	"signed char\000"
+ 1115      65642063 
+ 1115      68617200 
+ 1116              	.LASF27:
+ 1117 0267 55415254 		.ascii	"UART_PutString\000"
+ 1117      5F507574 
+ 1117      53747269 
+ 1117      6E6700
+ 1118              	.LASF23:
+ 1119 0276 43794465 		.ascii	"CyDelay\000"
+ 1119      6C617900 
+ 1120              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
