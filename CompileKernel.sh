@@ -16,8 +16,8 @@ export INSTALL_MOD_PATH=$DIRECTORY/kernel
 export INSTALL_DTBS_PATH=$DIRECTORY/kernel
 
 # This depends on the raspbery pi, we'll use the config for Pi 2 and 3B+
-export KERNEL=kernel7
 cd $DIRECTORY/linux/
+export KERNEL=kernel7
 make bcm2709_defconfig
 
 # Make files, 4 is the number of cores in your system.
