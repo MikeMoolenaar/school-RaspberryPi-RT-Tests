@@ -1,4 +1,4 @@
-set -e
+set -e # Stop script on error
 DIRECTORY=$1
 LINUXBRANCH=$2
 RASPBERRYPI_OPTION=$3
@@ -21,14 +21,14 @@ cd $DIRECTORY/linux/
 if [ $RASPBERRYPI_OPTION = "1" ] # Pi 1, Pi Zero, Pi Zero W
 then
     export KERNEL=kernel
-	make bcmrpi_defconfig
+    make bcmrpi_defconfig
 elif [ $RASPBERRYPI_OPTION = "2" ] # Pi 2, Pi 3, Pi 3B+
 then
     export KERNEL=kernel7
-	make bcm2709_defconfig
+    make bcm2709_defconfig
 else # Pi 4
     export KERNEL=kernel7l
-	make bcm2711_defconfig
+    make bcm2711_defconfig
 fi
 
 # Make files, 4 is the number of cores in your system.
@@ -38,7 +38,7 @@ make -j4 dtbs
 make -j4 modules_install 
 make -j4 dtbs_install
 
-# Move boot file into a tgz file
+# Move boot files into a tgz file
 mkdir $INSTALL_MOD_PATH/boot
 ./scripts/mkknlimg ./arch/arm/boot/zImage $INSTALL_MOD_PATH/boot/$KERNEL.img
 cd $INSTALL_MOD_PATH
