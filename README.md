@@ -1,6 +1,6 @@
 # Raspberry Pi RT tests
 This repo is meant as a resource for my report on the linux real time kernel (for the course Real Time Operating Systems). It contains tools to compile and test the realtime linux kernel for the raspberry pi.  
-My report in dutch can be found here: TODO.
+My report in dutch can be found [here](https://drive.google.com/file/d/17zLxdarNxSleK1PZwvfzkoR21cnYMYSn/view?usp=sharing).
 
 The following instructions assume that you have the following:
 - A linux system to clone and compile the kernel
