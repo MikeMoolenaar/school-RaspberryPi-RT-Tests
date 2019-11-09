@@ -27,7 +27,7 @@ make -j4 dtbs
 make -j4 modules_install 
 make -j4 dtbs_install
 
-# Move boot file into an tgz file
+# Move boot file into a tgz file
 mkdir $INSTALL_MOD_PATH/boot
 ./scripts/mkknlimg ./arch/arm/boot/zImage $INSTALL_MOD_PATH/boot/$KERNEL.img
 cd $INSTALL_MOD_PATH
