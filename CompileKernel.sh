@@ -1,6 +1,7 @@
 set -e
 DIRECTORY=$1
 LINUXBRANCH=$2
+RASPBERRYPI_OPTION=$3
 
 mkdir -p $DIRECTORY
 cd $DIRECTORY
@@ -15,10 +16,20 @@ export CROSS_COMPILE=$DIRECTORY/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf
 export INSTALL_MOD_PATH=$DIRECTORY/kernel
 export INSTALL_DTBS_PATH=$DIRECTORY/kernel
 
-# This depends on the raspbery pi, we'll use the config for Pi 2 and 3B+
 cd $DIRECTORY/linux/
-export KERNEL=kernel7
-make bcm2709_defconfig
+# This depends on the raspbery pi
+if [ $RASPBERRYPI_OPTION = "1" ] # Pi 1, Pi Zero, Pi Zero W
+then
+    export KERNEL=kernel
+	make bcmrpi_defconfig
+elif [ $RASPBERRYPI_OPTION = "2" ] # Pi 2, Pi 3, Pi 3B+
+then
+    export KERNEL=kernel7
+	make bcm2709_defconfig
+else # Pi 4
+    export KERNEL=kernel7l
+	make bcm2711_defconfig
+fi
 
 # Make files, 4 is the number of cores in your system.
 make -j4 zImage 

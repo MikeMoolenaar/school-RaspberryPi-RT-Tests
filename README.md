@@ -7,9 +7,9 @@ The following instructions assume that you have the following:
 - The raspberry pi with Raspbian Buster Lite installed, you can reach the pi via SSH.
 
 ## Compiling the kernel
-Execute the script, this will build the kernel and put it into the `kernel.tgz` file in the specified folder.
+Execute the script, this will build the kernel and put it into the `kernel.tgz` file in the specified folder. The last argument is the Raspberry Pi option and depends on what version you have: `Raspberry Pi 1, Pi Zero, Pi Zero W` = **1**, `Raspberry Pi 2, Pi 3, Pi 3+` = **2**, `Raspberry Pi 4`=**3**.
 ```shell
-sh CompileKernel.sh ~/rt-kernel rpi-4.19.y-rt # Remove '-rt' if you don't want the realtime kernel
+sh CompileKernel.sh ~/rt-kernel rpi-4.19.y-rt 2 # Remove '-rt' if you don't want the realtime kernel
 ```
 
 Move the kernel.tgz and the InstallKernel.sh to the pi's `/tmp` folder, login in via the pi and execute the following.
